@@ -27,7 +27,7 @@ class Adwords
         if (array_key_exists($key, $this->conversions)) {
             $this->container->get('session')->set(self::CONVERSION_KEY, $key);
         }
-    }	
+    }    
 
     /**
      * @return Conversion $conversion
@@ -38,7 +38,7 @@ class Adwords
             $key = $this->container->get('session')->get(self::CONVERSION_KEY);
             $this->container->get('session')->remove(self::CONVERSION_KEY);
             $config = $this->conversions[$key];
-            $this->activeConversion = new Conversion($config['id'], $config['label'], $config['value']);
+            $this->activeConversion = new Conversion($config['id'], $config['label'], $config['value'], $config['format'], $config['color'], $config['language']);
         }
         return $this->activeConversion;
     }
