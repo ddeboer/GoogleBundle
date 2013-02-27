@@ -19,5 +19,5 @@
             "AntiMattr\\GoogleBundle": ""
         }
     },
-    "target-dir" : "Czarnolecki/GoogleBundle"
+    "target-dir" : "AntiMattr/GoogleBundle"
 }
