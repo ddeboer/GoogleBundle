@@ -8,18 +8,25 @@ class CustomVariable
     private $name;
     private $value;
     private $scope = 1;
+    private $trackerName;
 
-    public function __construct($index, $name, $value, $scope = 1)
+    public function __construct($index, $name, $value, $scope = 1, $trackerName)
     {
         $this->index = $index;
         $this->name = $name;
         $this->value = $value;
         $this->scope = $scope;
+        $this->trackerName = $trackerName . '.';
     }
 
     public function getIndex()
     {
         return $this->index;
+    }
+
+    public function getTrackerName()
+    {
+        return $this->trackerName;
     }
 
     public function getName()
