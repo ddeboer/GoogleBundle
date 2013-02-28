@@ -12,10 +12,11 @@ class Transaction
     private $state;
     private $tax;
     private $total;
+    private $trackerName;
 
     public function setAffiliation($affiliation)
     {
-        $this->affiliation = (string) $affiliation;
+        $this->affiliation = (string)$affiliation;
     }
 
     public function getAffiliation()
@@ -23,9 +24,19 @@ class Transaction
         return $this->affiliation;
     }
 
+    public function setTrackerName($trackerName)
+    {
+        $this->trackerName = $trackerName . '.';
+    }
+
+    public function getTrackerName()
+    {
+        return $this->trackerName;
+    }
+
     public function setCity($city)
     {
-        $this->city = (string) $city;
+        $this->city = (string)$city;
     }
 
     public function getCity()
@@ -35,7 +46,7 @@ class Transaction
 
     public function setCountry($country)
     {
-        $this->country = (string) $country;
+        $this->country = (string)$country;
     }
 
     public function getCountry()
@@ -45,7 +56,7 @@ class Transaction
 
     public function setOrderNumber($orderNumber)
     {
-        $this->orderNumber = (string) $orderNumber;
+        $this->orderNumber = (string)$orderNumber;
     }
 
     public function getOrderNumber()
@@ -55,7 +66,7 @@ class Transaction
 
     public function setShipping($shipping)
     {
-        $this->shipping = (float) $shipping;
+        $this->shipping = (float)$shipping;
     }
 
     public function getShipping()
@@ -65,7 +76,7 @@ class Transaction
 
     public function setState($state)
     {
-        $this->state = (string) $state;
+        $this->state = (string)$state;
     }
 
     public function getState()
@@ -75,7 +86,7 @@ class Transaction
 
     public function setTax($tax)
     {
-        $this->tax = (float) $tax;
+        $this->tax = (float)$tax;
     }
 
     public function getTax()
@@ -85,7 +96,7 @@ class Transaction
 
     public function setTotal($total)
     {
-        $this->total = (float) $total;
+        $this->total = (float)$total;
     }
 
     public function getTotal()
