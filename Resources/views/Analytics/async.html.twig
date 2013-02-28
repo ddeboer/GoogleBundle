@@ -8,7 +8,7 @@ AntiMattr.GoogleAnalytics.onGatLoad = function(callback) {
     } else {
         var listener = this;
         setTimeout(function(){
-            listener.onGatLoad(callback);					
+            listener.onGatLoad(callback);
         },100);
     }
 };
@@ -27,6 +27,7 @@ AntiMattr.GoogleAnalytics.notifyEvent = function(tracker, category, action, labe
 if ( _gaq == null || typeof(_gaq) != 'array') { var _gaq = window._gaq = []; }
 
 {% for key, tracker in google_analytics.trackers %}
+{% if tracker.shouldRun %}
     _gaq.push(['{{ google_analytics.trackerName(key) }}_setAccount', '{{ tracker.accountId }}']);
 
     {% if tracker.domain %}
@@ -53,7 +54,9 @@ if ( _gaq == null || typeof(_gaq) != 'array') { var _gaq = window._gaq = []; }
 
     {% if google_analytics.hasCustomVariables %}
         {% for customVariable in google_analytics.customVariables %}
-            _gaq.push(['{{ google_analytics.trackerName(key) }}_setCustomVar', {{ customVariable.index }}, '{{ customVariable.name }}', '{{ customVariable.value }}', {{ customVariable.scope }}]);
+            {% if google_analytics.trackerName(key) == customVariable.trackerName %}}
+                _gaq.push(['{{ google_analytics.trackerName(key) }}_setCustomVar', {{ customVariable.index }}, '{{ customVariable.name }}', '{{ customVariable.value }}', {{ customVariable.scope }}]);
+            {% endif %}}
         {% endfor %}
     {% endif %}
 
@@ -62,7 +65,7 @@ if ( _gaq == null || typeof(_gaq) != 'array') { var _gaq = window._gaq = []; }
         _gaq.push(['{{ google_analytics.trackerName(key) }}_setSiteSpeedSampleRate', {{ siteSpeedSampleRate }}]);
     {% endif %}
 
-    {% if google_analytics.hasPageViewQueue %}
+    {% if google_analytics.hasPageViewQueue%}
         {% for pageView in google_analytics.pageViewQueue %}
             _gaq.push(['{{ google_analytics.trackerName(key) }}_trackPageview', '{{ pageView }}']);
         {% endfor %}
@@ -79,6 +82,7 @@ if ( _gaq == null || typeof(_gaq) != 'array') { var _gaq = window._gaq = []; }
     {% endif %}
 
     {% if google_analytics.isTransactionValid %}
+        {% if google_analytics.trackerName(key) == transaction.trackerName %}}
         {% set transaction = google_analytics.transaction %}
         _gaq.push(['{{ google_analytics.trackerName(key) }}_addTrans',
             '{{ transaction.orderNumber | escape('js') }}', // order number required
@@ -93,6 +97,7 @@ if ( _gaq == null || typeof(_gaq) != 'array') { var _gaq = window._gaq = []; }
 
         {% if google_analytics.hasItems %}
             {% for item in google_analytics.items %}
+                {% if google_analytics.trackerName(key) == item.trackerName %}}
                 _gaq.push(['{{ google_analytics.trackerName(key) }}_addItem',
                     '{{ item.orderNumber | escape('js') }}', // order number required
                     '{{ item.sku | escape('js') }}', // sku required
@@ -101,16 +106,18 @@ if ( _gaq == null || typeof(_gaq) != 'array') { var _gaq = window._gaq = []; }
                     '{{ item.price | escape('js') }}', // price required
                     '{{ item.quantity | escape('js') }}' // quantity required
                 ]);
+                {% endif %}
             {% endfor %}
         {% endif %}
 
         _gaq.push(['{{ google_analytics.trackerName(key) }}_trackTrans']);
-
+        {% endif %}
     {% endif %}
 
     {% if google_analytics.hasEventQueue %}
         AntiMattr.GoogleAnalytics.onGatLoad(function() {
         {% for event in google_analytics.eventQueue %}
+            {% if google_analytics.trackerName(key) == event.trackerName %}
             AntiMattr.GoogleAnalytics.notifyEvent(
                   '{{ google_analytics.trackerName(key) }}'
                 , '{{ event.category }}'
@@ -118,10 +125,11 @@ if ( _gaq == null || typeof(_gaq) != 'array') { var _gaq = window._gaq = []; }
                 {% if event.label is not null %}, '{{ event.label }}'{% endif %}
                 {% if event.value is not null %}, {{ event.value }}{% endif %}
             );
+            {%  endif %}
         {% endfor %}
         });
     {% endif %}
-
+{% endif %}
 {% endfor %}
 
 (function() {
