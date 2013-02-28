@@ -11,13 +11,20 @@ class Event
     private $category;
     private $label;
     private $value;
+    private $trackerName;
 
-    public function __construct($category, $action, $label = null, $value = null)
+    public function __construct($category, $action, $label = null, $value = null, $trackerName)
     {
-    	$this->action   = $action;
-    	$this->category = $category;
-    	$this->label    = $label;
-    	$this->value    = $value;
+        $this->action = $action;
+        $this->category = $category;
+        $this->label = $label;
+        $this->value = $value;
+        $this->trackerName = $trackerName . '.';
+    }
+
+    public function getTrackerName()
+    {
+        return $this->trackerName;
     }
 
     /**
