@@ -10,6 +10,17 @@ class Item
     private $price;
     private $quantity;
     private $sku;
+    private $trackerName;
+
+    public function setTrackerName($trackerName)
+    {
+        $this->trackerName = $trackerName . '.';
+    }
+
+    public function getTrackerName()
+    {
+        return $this->trackerName;
+    }
 
     public function setCategory($category)
     {
@@ -23,7 +34,7 @@ class Item
 
     public function setName($name)
     {
-        $this->name = (string) $name;
+        $this->name = (string)$name;
     }
 
     public function getName()
@@ -33,7 +44,7 @@ class Item
 
     public function setOrderNumber($orderNumber)
     {
-        $this->orderNumber = (string) $orderNumber;
+        $this->orderNumber = (string)$orderNumber;
     }
 
     public function getOrderNumber()
@@ -43,7 +54,7 @@ class Item
 
     public function setPrice($price)
     {
-        $this->price = (float) $price;
+        $this->price = (float)$price;
     }
 
     public function getPrice()
@@ -53,7 +64,7 @@ class Item
 
     public function setQuantity($quantity)
     {
-        $this->quantity = (int) $quantity;
+        $this->quantity = (int)$quantity;
     }
 
     public function getQuantity()
@@ -63,7 +74,7 @@ class Item
 
     public function setSku($sku)
     {
-        $this->sku = (string) $sku;
+        $this->sku = (string)$sku;
     }
 
     public function getSku()
