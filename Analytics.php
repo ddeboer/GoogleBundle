@@ -24,9 +24,11 @@ class Analytics
     private $api_key;
     private $client_id;
     private $table_id;
+    private $tracker;
+
 
     public function __construct(ContainerInterface $container,
-            array $trackers = array(), array $whitelist = array(), array $dashboard = array())
+        array $trackers = array(), array $whitelist = array(), array $dashboard = array())
     {
         $this->container = $container;
         $this->trackers = $trackers;
@@ -34,6 +36,16 @@ class Analytics
         $this->api_key = isset($dashboard['api_key']) ? $dashboard['api_key'] : '';
         $this->client_id = isset($dashboard['client_id']) ? $dashboard['client_id'] : '';
         $this->table_id = isset($dashboard['table_id']) ? $dashboard['table_id'] : '';
+    }
+
+    public function setTracker($tracker)
+    {
+        $this->tracker = $tracker;
+    }
+
+    public function getTracker()
+    {
+        return $this->tracker;
     }
 
     public function excludeBaseUrl()
@@ -172,6 +184,26 @@ class Analytics
     public function getTrackerName($trackerKey)
     {
         return $this->getTrackerProperty($trackerKey, 'name');
+    }
+
+    /**
+     * Włącza / wyłącza dany tracker
+     *
+     * @param string $trackerKey
+     * @param boolean $value
+     */
+    public function setTrackerRun($trackerKey, $value)
+    {
+        $this->setTrackerProperty($trackerKey, 'shouldRun', $value);
+    }
+
+    /**
+     * @param string $trackerKey
+     * @return string $name
+     */
+    public function getTrackerShow($trackerKey)
+    {
+        return $this->getTrackerProperty($trackerKey, 'shouldRun');
     }
 
     /**
