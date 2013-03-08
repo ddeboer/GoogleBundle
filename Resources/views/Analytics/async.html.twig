@@ -54,9 +54,9 @@ if ( _gaq == null || typeof(_gaq) != 'array') { var _gaq = window._gaq = []; }
 
     {% if google_analytics.hasCustomVariables %}
         {% for customVariable in google_analytics.customVariables %}
-            {% if google_analytics.trackerName(key) == customVariable.trackerName %}}
+            {% if google_analytics.trackerName(key) == customVariable.trackerName %}
                 _gaq.push(['{{ google_analytics.trackerName(key) }}_setCustomVar', {{ customVariable.index }}, '{{ customVariable.name }}', '{{ customVariable.value }}', {{ customVariable.scope }}]);
-            {% endif %}}
+            {% endif %}
         {% endfor %}
     {% endif %}
 
