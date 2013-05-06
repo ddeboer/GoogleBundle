@@ -1,5 +1,5 @@
 {
-    "name": "prgTW/google-bundle",
+    "name": "prgtw/google-bundle",
     "description": "The GoogleBundle adds the ability to add various google-related services to your application. These include Google Analytics, Adwords and Static Maps.",
     "keywords": ["google", "analytics", "adwords", "maps"],
     "type": "symfony-bundle",
