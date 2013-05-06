@@ -417,13 +417,13 @@ class Analytics
     public function getTrackers(array $trackers = array())
     {
         if (!empty($trackers)) {
-            $trackers = array();
+            $trackers2 = array();
             foreach ($trackers as $key) {
                 if (isset($this->trackers[$key])) {
-                    $trackers[$key] = $this->trackers[$key];
+                    $trackers2[$key] = $this->trackers[$key];
                 }
             }
-            return $trackers;
+            return $trackers2;
         } else {
             return $this->trackers;
         }
