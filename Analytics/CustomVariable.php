@@ -4,43 +4,99 @@ namespace AntiMattr\GoogleBundle\Analytics;
 
 class CustomVariable
 {
-    private $index;
-    private $name;
-    private $value;
-    private $scope = 1;
-    private $trackerName;
+	/**
+	 * @var int
+	 */
+	private $index;
 
-    public function __construct($index, $name, $value, $scope = 1, $trackerName)
-    {
-        $this->index = $index;
-        $this->name = $name;
-        $this->value = $value;
-        $this->scope = $scope;
-        $this->trackerName = $trackerName . '.';
-    }
+	/**
+	 * @var string
+	 */
+	private $name;
 
-    public function getIndex()
-    {
-        return $this->index;
-    }
+	/**
+	 * @var mixed
+	 */
+	private $value;
 
-    public function getTrackerName()
-    {
-        return $this->trackerName;
-    }
+	/**
+	 * @var string
+	 */
+	private $scope;
 
-    public function getName()
-    {
-        return $this->name;
-    }
+	/**
+	 * @var string
+	 */
+	private $trackerName;
 
-    public function getValue()
-    {
-        return $this->value;
-    }
+	/**
+	 * @var bool
+	 */
+	private $isValueComputed;
 
-    public function getScope()
-    {
-        return $this->scope;
-    }
+	/**
+	 * @param int $index
+	 * @param string $name
+	 * @param mixed $value Variable value or Twig variable name (f.ex. app.request.locale) when $isValueComputed is false
+	 * @param string $scope
+	 * @param string $trackerName
+	 * @param bool $isValueComputed
+	 */
+	public function __construct($index, $name, $value, $scope, $trackerName, $isValueComputed = true)
+	{
+		$this->index = $index;
+		$this->name = $name;
+		$this->value = $value;
+		$this->scope = $scope;
+		$this->trackerName = $trackerName . '.';
+		$this->isValueComputed = $isValueComputed;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getIndex()
+	{
+		return $this->index;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getTrackerName()
+	{
+		return $this->trackerName;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isValueComputed()
+	{
+		return $this->isValueComputed;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getValue()
+	{
+		return $this->value;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getScope()
+	{
+		return $this->scope;
+	}
 }

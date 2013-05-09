@@ -21,6 +21,9 @@ class GoogleExtension extends Extension
             'maps' => array(),
         );
 
+		$loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+		$loader->load('twig.xml');
+
         foreach ($configs as $config) {
             foreach (array_keys($modules) as $module) {
                 if (array_key_exists($module, $config)) {
