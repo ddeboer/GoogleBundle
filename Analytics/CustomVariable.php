@@ -30,26 +30,19 @@ class CustomVariable
 	private $trackerName;
 
 	/**
-	 * @var bool
-	 */
-	private $isValueComputed;
-
-	/**
 	 * @param int $index
 	 * @param string $name
-	 * @param mixed $value Variable value or Twig variable name (f.ex. app.request.locale) when $isValueComputed is false
+	 * @param mixed $value
 	 * @param string $scope
 	 * @param string $trackerName
-	 * @param bool $isValueComputed
 	 */
-	public function __construct($index, $name, $value, $scope, $trackerName, $isValueComputed = true)
+	public function __construct($index, $name, $value, $scope, $trackerName)
 	{
 		$this->index = $index;
 		$this->name = $name;
 		$this->value = $value;
 		$this->scope = $scope;
 		$this->trackerName = $trackerName . '.';
-		$this->isValueComputed = $isValueComputed;
 	}
 
 	/**
@@ -74,14 +67,6 @@ class CustomVariable
 	public function getName()
 	{
 		return $this->name;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function isValueComputed()
-	{
-		return $this->isValueComputed;
 	}
 
 	/**
