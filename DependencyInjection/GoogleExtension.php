@@ -61,10 +61,9 @@ class GoogleExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('analytics.xml');
 
+        $trackers = [];
         foreach ($configs as $config) {
-            if (isset($config['trackers'])) {
-                $container->setParameter('google.analytics.trackers', $config['trackers']);
-            }
+    		$trackers = array_merge($trackers, isset($config['trackers']) ? $config['trackers'] : []);
             if (isset($config['dashboard'])) {
                 $container->setParameter('google.analytics.dashboard', $config['dashboard']);
             }
@@ -81,6 +80,7 @@ class GoogleExtension extends Extension
                 $container->setParameter('google.analytics.js_source_endpoint', $config['js_source_endpoint']);
             }
         }
+		$container->setParameter('google.analytics.trackers', $trackers);
     }
 
     /**
