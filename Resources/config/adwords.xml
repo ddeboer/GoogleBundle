@@ -6,21 +6,21 @@
 		<parameter key="google.adwords.conversions" type="collection" />
 		<parameter key="google.adwords.class">AntiMattr\GoogleBundle\Adwords</parameter>
 		<parameter key="google.adwords.helper.class">AntiMattr\GoogleBundle\Helper\AdwordsHelper</parameter>
-		<parameter key="google.adwords.extension.class">AntiMattr\GoogleBundle\Extension\AdwordsExtension"</parameter>
+		<parameter key="google.adwords.extension.class">AntiMattr\GoogleBundle\Extension\AdwordsExtension</parameter>
 	</parameters>
 
 	<services>
-		<service id="google.adwords" class="google.adwords.class" >
+		<service id="google.adwords" class="%google.adwords.class%" >
 			<argument type="service" id="service_container" />
 			<argument>%google.adwords.conversions%</argument>
 		</service>
 
-		<service id="templating.helper.google_adwords" class="google.adwords.helper.class">
+		<service id="templating.helper.google_adwords" class="%google.adwords.helper.class%">
 			<tag name="templating.helper" alias="google_adwords" />
 			<argument type="service" id="google.adwords" />
 		</service>
 
-		<service id="twig.extension.google_adwords" class="google.adwords.extension.class">
+		<service id="twig.extension.google_adwords" class="%google.adwords.extension.class%">
 			<tag name="twig.extension" />
 			<argument type="service" id="templating.helper.google_adwords" />
 		</service>
