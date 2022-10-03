@@ -1,2 +1,6 @@
 Tests/testkernel/cache/*
 phpunit.xml
+.idea/
+vendor/
+composer.lock
+composer.phar
