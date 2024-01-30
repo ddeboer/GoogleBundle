@@ -13,13 +13,13 @@ class Event
     private $value;
     private $trackerName;
 
-    public function __construct($category, $action, $label = null, $value = null, $trackerName)
+    public function __construct($category, $action, $label = null, $value = null, $trackerName = null)
     {
         $this->action = $action;
         $this->category = $category;
         $this->label = $label;
         $this->value = $value;
-        $this->trackerName = $trackerName . '.';
+        $this->trackerName = ($trackerName ?? '') . '.';
     }
 
     public function getTrackerName()

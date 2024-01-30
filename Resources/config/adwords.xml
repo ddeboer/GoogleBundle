@@ -10,7 +10,7 @@
 	</parameters>
 
 	<services>
-		<service id="google.adwords" class="%google.adwords.class%" >
+		<service id="google.adwords" class="%google.adwords.class%" public="true">
 			<argument type="service" id="service_container" />
 			<argument>%google.adwords.conversions%</argument>
 		</service>

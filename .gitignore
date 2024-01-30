@@ -1,5 +1,8 @@
-Tests/testkernel/cache/*
+var/
+!var/cache/.gitignore
+!var/log/.gitignore
 phpunit.xml
+.phpunit.result.cache
 .idea/
 vendor/
 composer.lock

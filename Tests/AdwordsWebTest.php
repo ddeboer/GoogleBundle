@@ -2,28 +2,24 @@
 
 namespace AntiMattr\GoogleBundle\Tests;
 
-use DateTime;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use AntiMattr\GoogleBundle\Adwords;
-use AntiMattr\GoogleBundle\Adwords\Conversion;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class AdwordsWebTest extends WebTestCase
 {
-    private $adwords;
-    private $client;
+    private ?Adwords $adwords;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->client = static::createClient();
+        self::bootKernel();
         $this->adwords = static::$kernel->getContainer()->get('google.adwords');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
+        self::ensureKernelShutdown();
         $this->adwords = null;
-        $this->client = null;
         parent::tearDown();
     }
 

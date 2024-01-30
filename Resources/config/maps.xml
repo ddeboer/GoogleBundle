@@ -7,7 +7,7 @@
 	</parameters>
 
 	<services>
-		<service id="google.maps" class="AntiMattr\GoogleBundle\MapsManager" >
+		<service id="google.maps" class="AntiMattr\GoogleBundle\MapsManager" public="true">
 			<argument>%google.maps.config%</argument>
 		</service>
 

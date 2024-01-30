@@ -2,55 +2,51 @@
 
 namespace AntiMattr\GoogleBundle\Tests;
 
-use DateTime;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use AntiMattr\GoogleBundle\Analytics;
 use AntiMattr\GoogleBundle\Analytics\Event;
 use AntiMattr\GoogleBundle\Analytics\Item;
 use AntiMattr\GoogleBundle\Analytics\Transaction;
+use InvalidArgumentException;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class AnalyticsWebTest extends WebTestCase
 {
-    private $analytics;
-    private $client;
+    private ?Analytics $analytics;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->client = static::createClient();
+        self::bootKernel();
         $this->analytics = static::$kernel->getContainer()->get('google.analytics');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
+        self::ensureKernelShutdown();
         $this->analytics = null;
-        $this->client = null;
         parent::tearDown();
     }
 
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $this->assertFalse($this->analytics->hasPageViewQueue());
         $this->assertFalse($this->analytics->hasCustomVariables());
         $this->assertFalse($this->analytics->hasItems());
         $this->assertNull($this->analytics->getTransaction());
-        $this->assertEquals(1, count($this->analytics->getTrackers()));
+        $this->assertCount(1, $this->analytics->getTrackers());
         $this->assertTrue($this->analytics->getAllowLinker('default'));
         $this->assertFalse($this->analytics->getAllowHash('default'));
         $this->assertTrue($this->analytics->getIncludeNamePrefix('default'));
         $this->assertTrue(0 < strlen($this->analytics->getTrackerName('default')));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testExpectedInvalidArgumentException()
+    public function testExpectedInvalidArgumentException(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->analytics->getAllowLinker('not-a-tracker');
     }
 
-    public function testSetGetCustomPageView()
+    public function testSetGetCustomPageView(): void
     {
         $customPageView = '/profile/mattfitz';
         $this->assertFalse($this->analytics->hasCustomPageView());
@@ -65,66 +61,66 @@ class AnalyticsWebTest extends WebTestCase
     /**
      * @dataProvider providePageViewsForQueue
      */
-    public function testEnqueuePageView($pageViews, $count)
+    public function testEnqueuePageView($pageViews, $count): void
     {
         foreach ($pageViews as $pageView) {
             $this->analytics->enqueuePageView($pageView);
         }
 
         $this->assertTrue($this->analytics->hasPageViewQueue());
-        $this->assertEquals($count, count($this->analytics->getPageViewQueue()));
+        $this->assertCount($count, $this->analytics->getPageViewQueue());
     }
 
-    public function providePageViewsForQueue()
+    public function providePageViewsForQueue(): array
     {
-        return array(
-            array(
-                array('/page-a', '/page-b', '/page-c'),
-                3
-            ),
-            array(
-                array('/page-y', '/page-z'),
-                2
-            )
-        );
+        return [
+            [
+                ['/page-a', '/page-b', '/page-c'],
+                3,
+            ],
+            [
+                ['/page-y', '/page-z'],
+                2,
+            ],
+        ];
     }
 
     /**
      * @dataProvider provideEventsForQueue
      */
-    public function testEnqueueEvent($eventData, $count)
+    public function testEnqueueEvent($eventData, $count): void
     {
         foreach ($eventData as $data) {
-            $event = new Event($data['category'], $data['action']);
+            $event = new Event($data['category'], $data['action'], null, null, 'default');
             $this->analytics->enqueueEvent($event);
         }
 
         $this->assertTrue($this->analytics->hasEventQueue());
-        $this->assertEquals($count, count($this->analytics->getEventQueue()));
+        $this->assertCount($count, $this->analytics->getEventQueue());
     }
 
-    public function provideEventsForQueue()
+    public function provideEventsForQueue(): array
     {
-        return array(
-            array(
-                array(
-                    array('category' => 'Category A', 'action' => 'Action A'),
-                    array('category' => 'Category B', 'action' => 'Action B'),
-                    array('category' => 'Category C', 'action' => 'Action C')
-                ),
-                3
-            ),
-            array(
-                array(
-                    array('category' => 'Category D', 'action' => 'Action D'),
-                    array('category' => 'Category E', 'action' => 'Action E'),
-                ),
-                2
-            )
-        );
+        return [
+            [
+                [
+                    ['category' => 'Category A', 'action' => 'Action A'],
+                    ['category' => 'Category B', 'action' => 'Action B'],
+                    ['category' => 'Category C', 'action' => 'Action C'],
+                ],
+                3,
+            ],
+            [
+                [
+                    ['category' => 'Category D', 'action' => 'Action D'],
+                    ['category' => 'Category E', 'action' => 'Action E'],
+                ],
+                2,
+            ],
+        ];
     }
 
-    public function testSetGetTransaction()
+    public function testSetGetTransaction(): void
     {
         $this->assertFalse($this->analytics->isTransactionValid());
 
@@ -154,7 +150,7 @@ class AnalyticsWebTest extends WebTestCase
         $this->assertFalse($this->analytics->isTransactionValid());
     }
 
-    public function testAddGetItems()
+    public function testAddGetItems(): void
     {
         $item = new Item();
         $item->setOrderNumber('xxxx');
@@ -179,40 +175,40 @@ class AnalyticsWebTest extends WebTestCase
         $this->assertTrue($this->analytics->hasItem($item));
 
         $this->assertTrue($this->analytics->hasItems());
-        $this->assertEquals(2, count($this->analytics->getItems()));
+        $this->assertCount(2, $this->analytics->getItems());
     }
 
-    public function testSetAllowAnchor()
+    public function testSetAllowAnchor(): void
     {
         $this->analytics->setAllowAnchor('default', false);
         $this->assertFalse($this->analytics->getAllowAnchor('default'));
     }
 
-    public function testSetAllowHash()
+    public function testSetAllowHash(): void
     {
         $this->analytics->setAllowHash('default', true);
         $this->assertTrue($this->analytics->getAllowHash('default'));
     }
 
-    public function testSetAllowLinker()
+    public function testSetAllowLinker(): void
     {
         $this->analytics->setAllowLinker('default', false);
         $this->assertFalse($this->analytics->getAllowLinker('default'));
     }
 
-    public function testSetIncludeNamePrefix()
+    public function testSetIncludeNamePrefix(): void
     {
         $this->analytics->setIncludeNamePrefix('default', false);
         $this->assertFalse($this->analytics->getIncludeNamePrefix('default'));
     }
 
-    public function testSetTrackerName()
+    public function testSetTrackerName(): void
     {
         $this->analytics->setTrackerName('default', 'a-different-name');
         $this->assertEquals('a-different-name', $this->analytics->getTrackerName('default'));
     }
 
-    public function testSetSiteSpeedSampleRate()
+    public function testSetSiteSpeedSampleRate(): void
     {
         $this->assertNull($this->analytics->getSiteSpeedSampleRate('default'));
         $this->analytics->setSiteSpeedSampleRate('default', '6');

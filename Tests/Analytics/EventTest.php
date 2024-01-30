@@ -3,42 +3,30 @@
 namespace AntiMattr\GoogleBundle\Tests\Analytics;
 
 use AntiMattr\GoogleBundle\Analytics\Event;
+use PHPUnit\Framework\TestCase;
 
-class EventTest extends \PHPUnit_Framework_TestCase
+class EventTest extends TestCase
 {
-    private $event;
-
-    public function setUp()
+    public function testConstructor(): void
     {
-        parent::setup();
-        $this->category = 'Test category';
-        $this->action = 'Test action';
-        $this->label = 'Test label';
-        $this->value = 'Test value';
-        $this->event = new Event($this->category, $this->action);
+        $event = new Event('Test category', 'Test action');
+
+        $this->assertSame('Test category', $event->getCategory());
+        $this->assertSame('Test action', $event->getAction());
+        $this->assertNull($event->getLabel());
+        $this->assertNull($event->getValue());
+        $this->assertSame('.', $event->getTrackerName());
     }
 
-    public function tearDown()
+    public function testConstructor2(): void
     {
-        $this->event = null;
-        $this->value = null;
-        $this->label = null;
-        $this->action = null;
-        $this->category = null;
-        parent::tearDown();
+        $event = new Event('Test category', 'Test action', 'Test label', 'Test value', 'Test trackerName');
+
+        $this->assertSame('Test category', $event->getCategory());
+        $this->assertSame('Test action', $event->getAction());
+        $this->assertSame('Test label', $event->getLabel());
+        $this->assertSame('Test value', $event->getValue());
+        $this->assertSame('Test trackerName.', $event->getTrackerName());
     }
 
-    public function testConstructor()
-    {
-        $this->assertEquals($this->category, $this->event->getCategory());
-        $this->assertEquals($this->action, $this->event->getAction());
-        $this->assertNull($this->event->getLabel());
-        $this->assertNull($this->event->getValue());
-
-        $label = 'Test label';
-        $value = 'Test value';
-        $event = new Event($this->category, $this->action, $label, $value);
-        $this->assertEquals($label, $event->getLabel());
-        $this->assertEquals($value, $event->getValue());
-    }
 }

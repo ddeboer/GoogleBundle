@@ -3,33 +3,25 @@
 namespace AntiMattr\GoogleBundle\Tests\Adwords;
 
 use AntiMattr\GoogleBundle\Adwords\Conversion;
+use PHPUnit\Framework\TestCase;
 
-class ConversionTest extends \PHPUnit_Framework_TestCase
+class ConversionTest extends TestCase
 {
-    private $conversion;
-
-    public function setUp()
+    public function testConstructor(): void
     {
-        parent::setup();
-        $this->id = 'xxxxxx';
-        $this->label = 'my_label';
-        $this->value = 100;
-        $this->conversion = new Conversion($this->id, $this->label, $this->value);
-    }
-
-    public function tearDown()
-    {
-        $this->id = null;
-        $this->label = null;
-        $this->value = null;
-        $this->conversion = null;
-        parent::tearDown();
-    }
-
-    public function testConstructor()
-    {
-        $this->assertEquals($this->id, $this->conversion->getId());
-        $this->assertEquals($this->label, $this->conversion->getLabel());
-        $this->assertEquals($this->value, $this->conversion->getValue());
+        $conversion = new Conversion(
+            'id',
+            'label',
+            'value',
+            'value',
+            'color',
+            'language',
+        );
+        $this->assertSame('id', $conversion->getId());
+        $this->assertSame('label', $conversion->getLabel());
+        $this->assertSame('value', $conversion->getValue());
+        $this->assertSame('value', $conversion->getFormat());
+        $this->assertSame('color', $conversion->getColor());
+        $this->assertSame('language', $conversion->getLanguage());
     }
 }

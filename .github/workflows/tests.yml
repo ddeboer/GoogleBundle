@@ -1,0 +1,62 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build-for-lowest-dependencies:
+    strategy:
+      matrix:
+        php:
+          - 7.4
+          - 8.0
+          - 8.1
+          - 8.2
+        symfony:
+          - ^3.4
+          - ^4.4
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+      - name: Install dependencies
+        run: composer update --prefer-lowest --no-progress
+
+      - name: Run phpstan
+        run: composer run-script phpstan
+
+      - name: Run test suite
+        run: composer run-script tests
+  build-for-highest-dependencies:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+      - name: Install dependencies
+        run: composer update --no-progress
+
+      - name: Run phpstan
+        run: composer run-script phpstan
+
+      - name: Run test suite
+        run: composer run-script tests

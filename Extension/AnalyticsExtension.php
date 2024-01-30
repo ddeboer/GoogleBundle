@@ -3,30 +3,22 @@
 namespace AntiMattr\GoogleBundle\Extension;
 
 use AntiMattr\GoogleBundle\Helper\AnalyticsHelper;
+use Twig\Extension\AbstractExtension;
+use Twig\Extension\GlobalsInterface;
 
-class AnalyticsExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
+class AnalyticsExtension extends AbstractExtension implements GlobalsInterface
 {
-    private $analyticsHelper;
+    private AnalyticsHelper $analyticsHelper;
 
     public function __construct(AnalyticsHelper $analyticsHelper)
     {
         $this->analyticsHelper = $analyticsHelper;
     }
 
-    public function getGlobals()
+    public function getGlobals(): array
     {
-        return array(
-            'google_analytics' => $this->analyticsHelper
-        );
-    }
-
-    /**
-     * Returns the name of the extension.
-     *
-     * @return string The extension name
-     */
-    public function getName()
-    {
-        return 'google_analytics';
+        return [
+            'google_analytics' => $this->analyticsHelper,
+        ];
     }
 }
